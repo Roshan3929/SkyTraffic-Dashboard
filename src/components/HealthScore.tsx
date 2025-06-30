@@ -291,7 +291,7 @@ const HealthScore = ({ data }: HealthScoreProps) => {
                   <p className="text-slate-600 mt-1">Only positive delays count</p>
                 </div>
                 <div className="p-3 bg-blue-50 rounded">
-                  <code className="font-mono">IS_DELAYED = DEPARTURE_DELAY > 15 ? 1 : 0</code>
+                  <code className="font-mono">IS_DELAYED = DEPARTURE_DELAY {'>'}  15 ? 1 : 0</code>
                   <p className="text-slate-600 mt-1">Binary flag for significant delays</p>
                 </div>
                 <div className="p-3 bg-blue-50 rounded">
@@ -316,7 +316,7 @@ const HealthScore = ({ data }: HealthScoreProps) => {
               </div>
               <div className="text-sm text-slate-600">
                 <p><strong>Route-based Analysis:</strong> Health scores are calculated per route (origin-destination pair) as specified in your PySpark implementation.</p>
-                <p className="mt-2"><strong>Delay Threshold:</strong> Flights with departure delays > 15 minutes are considered delayed.</p>
+                <p className="mt-2"><strong>Delay Threshold:</strong> Flights with departure delays {'>'}  15 minutes are considered delayed.</p>
               </div>
             </div>
           </div>
