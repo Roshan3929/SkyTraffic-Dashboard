@@ -42,14 +42,14 @@ const DataFilters = ({ data, onFilterChange }: DataFiltersProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="space-y-2">
-        <Label htmlFor="airline-select" className="text-sm font-medium text-slate-700">
+        <Label htmlFor="airline-select" className="text-sm font-medium text-slate-200">
           Filter by Airline
         </Label>
         <Select value={selectedAirline} onValueChange={(value) => handleFilterUpdate('airline', value)}>
-          <SelectTrigger className="bg-white/80 backdrop-blur-sm border-slate-300">
+          <SelectTrigger className="bg-slate-700/80 backdrop-blur-sm border-slate-600 text-slate-200">
             <SelectValue placeholder="All Airlines" />
           </SelectTrigger>
-          <SelectContent className="bg-white/95 backdrop-blur-sm border-slate-300">
+          <SelectContent className="bg-slate-800/95 backdrop-blur-sm border-slate-600 text-slate-200">
             <SelectItem value="all">All Airlines</SelectItem>
             {airlines.map(airline => (
               <SelectItem key={airline} value={airline}>{airline}</SelectItem>
@@ -59,14 +59,14 @@ const DataFilters = ({ data, onFilterChange }: DataFiltersProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="route-select" className="text-sm font-medium text-slate-700">
+        <Label htmlFor="route-select" className="text-sm font-medium text-slate-200">
           Filter by Route
         </Label>
         <Select value={selectedRoute} onValueChange={(value) => handleFilterUpdate('route', value)}>
-          <SelectTrigger className="bg-white/80 backdrop-blur-sm border-slate-300">
+          <SelectTrigger className="bg-slate-700/80 backdrop-blur-sm border-slate-600 text-slate-200">
             <SelectValue placeholder="All Routes" />
           </SelectTrigger>
-          <SelectContent className="bg-white/95 backdrop-blur-sm border-slate-300">
+          <SelectContent className="bg-slate-800/95 backdrop-blur-sm border-slate-600 text-slate-200">
             <SelectItem value="all">All Routes</SelectItem>
             {routes.map(route => (
               <SelectItem key={route} value={route}>{route}</SelectItem>
@@ -76,7 +76,7 @@ const DataFilters = ({ data, onFilterChange }: DataFiltersProps) => {
       </div>
 
       <div className="space-y-4">
-        <Label className="text-sm font-medium text-slate-700">
+        <Label className="text-sm font-medium text-slate-200">
           Delay Range (minutes): {delayRange[0]} to {delayRange[1]}
         </Label>
         <Slider
@@ -87,7 +87,7 @@ const DataFilters = ({ data, onFilterChange }: DataFiltersProps) => {
           step={5}
           className="w-full"
         />
-        <div className="flex justify-between text-xs text-slate-500">
+        <div className="flex justify-between text-xs text-slate-400">
           <span>-50 min</span>
           <span>200 min</span>
         </div>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Download, Filter, Calendar, TrendingUp, BarChart3, Activity, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -82,16 +83,16 @@ const AnalyticsDashboard = ({ file, onBack }: AnalyticsDashboardProps) => {
 
   if (isProcessing) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
-        <Card className="w-96 border-0 shadow-2xl bg-white/80 backdrop-blur-sm">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <Card className="w-96 border-slate-700 shadow-2xl bg-slate-800/80 backdrop-blur-sm">
           <CardContent className="p-8 text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
               <BarChart3 className="w-8 h-8 text-white animate-pulse" />
             </div>
-            <h3 className="text-xl font-semibold text-slate-800 mb-4">Processing Flight Data</h3>
-            <p className="text-slate-600 mb-6">Using PySpark to analyze your dataset...</p>
-            <div className="w-full bg-slate-200 rounded-full h-2">
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full animate-pulse" style={{width: '75%'}}></div>
+            <h3 className="text-xl font-semibold text-slate-100 mb-4">Processing Flight Data</h3>
+            <p className="text-slate-300 mb-6">Using PySpark to analyze your dataset...</p>
+            <div className="w-full bg-slate-700 rounded-full h-2">
+              <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full animate-pulse" style={{width: '75%'}}></div>
             </div>
           </CardContent>
         </Card>
@@ -100,7 +101,7 @@ const AnalyticsDashboard = ({ file, onBack }: AnalyticsDashboardProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -108,26 +109,26 @@ const AnalyticsDashboard = ({ file, onBack }: AnalyticsDashboardProps) => {
             <Button
               onClick={onBack}
               variant="outline"
-              className="bg-white/80 backdrop-blur-sm border-slate-300 hover:bg-white"
+              className="bg-slate-800/80 backdrop-blur-sm border-slate-600 hover:bg-slate-700 text-slate-100"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Upload
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-slate-800">Flight Analytics Dashboard</h1>
-              <p className="text-slate-600">Analyzing {filteredData.length} flight records</p>
+              <h1 className="text-3xl font-bold text-slate-100">Flight Analytics Dashboard</h1>
+              <p className="text-slate-300">Analyzing {filteredData.length} flight records</p>
             </div>
           </div>
-          <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+          <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
             <Download className="w-4 h-4 mr-2" />
             Export Report
           </Button>
         </div>
 
         {/* Filters */}
-        <Card className="mb-8 border-0 shadow-lg bg-white/80 backdrop-blur-sm">
+        <Card className="mb-8 border-slate-700 shadow-lg bg-slate-800/80 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-slate-100">
               <Filter className="w-5 h-5 mr-2" />
               Data Filters
             </CardTitle>
@@ -139,24 +140,24 @@ const AnalyticsDashboard = ({ file, onBack }: AnalyticsDashboardProps) => {
 
         {/* Analytics Tabs */}
         <Tabs defaultValue="delays" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-white/80 backdrop-blur-sm border-0 shadow-lg">
-            <TabsTrigger value="delays" className="flex items-center space-x-2">
+          <TabsList className="grid w-full grid-cols-5 bg-slate-800/80 backdrop-blur-sm border-slate-700 shadow-lg">
+            <TabsTrigger value="delays" className="flex items-center space-x-2 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100">
               <TrendingUp className="w-4 h-4" />
               <span>Delay Analytics</span>
             </TabsTrigger>
-            <TabsTrigger value="heatmap" className="flex items-center space-x-2">
+            <TabsTrigger value="heatmap" className="flex items-center space-x-2 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100">
               <Calendar className="w-4 h-4" />
               <span>Heatmap</span>
             </TabsTrigger>
-            <TabsTrigger value="trends" className="flex items-center space-x-2">
+            <TabsTrigger value="trends" className="flex items-center space-x-2 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100">
               <BarChart3 className="w-4 h-4" />
               <span>Trends</span>
             </TabsTrigger>
-            <TabsTrigger value="routes" className="flex items-center space-x-2">
+            <TabsTrigger value="routes" className="flex items-center space-x-2 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100">
               <MapPin className="w-4 h-4" />
               <span>Routes</span>
             </TabsTrigger>
-            <TabsTrigger value="health" className="flex items-center space-x-2">
+            <TabsTrigger value="health" className="flex items-center space-x-2 data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100">
               <Activity className="w-4 h-4" />
               <span>Health Score</span>
             </TabsTrigger>
