@@ -2,15 +2,16 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { FlightData } from '@/utils/dataProcessing';
 
 interface TrendAnalysisProps {
-  data: any[];
+  data: FlightData[];
 }
 
 const TrendAnalysis = ({ data }: TrendAnalysisProps) => {
-  // Process monthly trend data
+  // Process monthly trend data using correct field names
   const monthlyData = data.reduce((acc: any, flight) => {
-    const month = flight.month;
+    const month = flight.MONTH;
     if (!acc[month]) {
       acc[month] = {
         month,
@@ -18,7 +19,7 @@ const TrendAnalysis = ({ data }: TrendAnalysisProps) => {
         count: 0
       };
     }
-    acc[month].delays.push(flight.arrival_delay);
+    acc[month].delays.push(flight.ARRIVAL_DELAY);
     acc[month].count++;
     return acc;
   }, {});
@@ -86,7 +87,7 @@ const TrendAnalysis = ({ data }: TrendAnalysisProps) => {
         <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardContent className="p-6 text-center">
             <div className="text-3xl font-bold text-blue-600 mb-2">
-              {(data.reduce((sum, flight) => sum + flight.arrival_delay, 0) / data.length).toFixed(1)}
+              {(data.reduce((sum, flight) => sum + flight.ARRIVAL_DELAY, 0) / data.length).toFixed(1)}
             </div>
             <div className="text-sm text-slate-600">Average Delay (minutes)</div>
           </CardContent>
@@ -95,7 +96,7 @@ const TrendAnalysis = ({ data }: TrendAnalysisProps) => {
         <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardContent className="p-6 text-center">
             <div className="text-3xl font-bold text-green-600 mb-2">
-              {((data.filter(flight => flight.arrival_delay <= 15).length / data.length) * 100).toFixed(1)}%
+              {((data.filter(flight => flight.ARRIVAL_DELAY <= 15).length / data.length) * 100).toFixed(1)}%
             </div>
             <div className="text-sm text-slate-600">On-time Performance</div>
           </CardContent>
@@ -104,7 +105,7 @@ const TrendAnalysis = ({ data }: TrendAnalysisProps) => {
         <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardContent className="p-6 text-center">
             <div className="text-3xl font-bold text-purple-600 mb-2">
-              {Math.max(...data.map(flight => flight.arrival_delay)).toFixed(0)}
+              {Math.max(...data.map(flight => flight.ARRIVAL_DELAY)).toFixed(0)}
             </div>
             <div className="text-sm text-slate-600">Max Delay (minutes)</div>
           </CardContent>

@@ -2,13 +2,14 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { FlightData } from '@/utils/dataProcessing';
 
 interface RouteAnalysisProps {
-  data: any[];
+  data: FlightData[];
 }
 
 const RouteAnalysis = ({ data }: RouteAnalysisProps) => {
-  // Process route data
+  // Process route data using correct field names
   const routeDelays = data.reduce((acc: any, flight) => {
     if (!acc[flight.route]) {
       acc[flight.route] = {
@@ -17,7 +18,7 @@ const RouteAnalysis = ({ data }: RouteAnalysisProps) => {
         count: 0
       };
     }
-    acc[flight.route].delays.push(flight.arrival_delay);
+    acc[flight.route].delays.push(flight.ARRIVAL_DELAY);
     acc[flight.route].count++;
     return acc;
   }, {});
@@ -37,7 +38,7 @@ const RouteAnalysis = ({ data }: RouteAnalysisProps) => {
       <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
         <CardHeader>
           <CardTitle>Top 15 Most Delayed Routes</CardTitle>
-          <CardDescription>Routes with highest average arrival delays</CardDescription>
+          <CardDescription>Routes with highest average arrival delays (ORIGIN_AIRPORT-DESTINATION_AIRPORT)</CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={500}>

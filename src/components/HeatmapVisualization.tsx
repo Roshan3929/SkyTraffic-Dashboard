@@ -1,13 +1,14 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { FlightData } from '@/utils/dataProcessing';
 
 interface HeatmapVisualizationProps {
-  data: any[];
+  data: FlightData[];
 }
 
 const HeatmapVisualization = ({ data }: HeatmapVisualizationProps) => {
-  // Create heatmap data structure
+  // Create heatmap data structure using correct field names
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
@@ -18,7 +19,7 @@ const HeatmapVisualization = ({ data }: HeatmapVisualizationProps) => {
       );
       
       const avgDelay = flights.length > 0 
-        ? flights.reduce((sum, flight) => sum + flight.arrival_delay, 0) / flights.length
+        ? flights.reduce((sum, flight) => sum + flight.ARRIVAL_DELAY, 0) / flights.length
         : 0;
 
       return {
@@ -48,7 +49,7 @@ const HeatmapVisualization = ({ data }: HeatmapVisualizationProps) => {
     <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
       <CardHeader>
         <CardTitle>Average Arrival Delay Heatmap</CardTitle>
-        <CardDescription>Delays by day of week and hour of day</CardDescription>
+        <CardDescription>Delays by day of week and hour of day (extracted from SCHEDULED_DEPARTURE)</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

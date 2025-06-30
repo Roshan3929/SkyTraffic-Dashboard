@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
+import { FlightData } from '@/utils/dataProcessing';
 
 interface DataFiltersProps {
-  data: any[];
+  data: FlightData[];
   onFilterChange: (filters: any) => void;
 }
 
@@ -14,7 +15,7 @@ const DataFilters = ({ data, onFilterChange }: DataFiltersProps) => {
   const [selectedRoute, setSelectedRoute] = useState('all');
   const [delayRange, setDelayRange] = useState([-50, 200]);
 
-  const airlines = [...new Set(data.map(flight => flight.airline))].sort();
+  const airlines = [...new Set(data.map(flight => flight.AIRLINE))].sort();
   const routes = [...new Set(data.map(flight => flight.route))].sort();
 
   const handleFilterUpdate = (filterType: string, value: any) => {

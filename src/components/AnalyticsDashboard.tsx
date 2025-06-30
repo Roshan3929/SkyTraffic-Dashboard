@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Download, Filter, Calendar, TrendingUp, BarChart3, Activity, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import TrendAnalysis from '@/components/TrendAnalysis';
 import RouteAnalysis from '@/components/RouteAnalysis';
 import HealthScore from '@/components/HealthScore';
 import DataFilters from '@/components/DataFilters';
+import { parseCsvToFlightData, generateSampleFlightData, FlightData } from '@/utils/dataProcessing';
 
 interface AnalyticsDashboardProps {
   file: File;
@@ -18,46 +18,37 @@ interface AnalyticsDashboardProps {
 
 const AnalyticsDashboard = ({ file, onBack }: AnalyticsDashboardProps) => {
   const [isProcessing, setIsProcessing] = useState(true);
-  const [flightData, setFlightData] = useState<any[]>([]);
-  const [filteredData, setFilteredData] = useState<any[]>([]);
+  const [flightData, setFlightData] = useState<FlightData[]>([]);
+  const [filteredData, setFilteredData] = useState<FlightData[]>([]);
 
   useEffect(() => {
-    // Simulate data processing with PySpark
     const processData = async () => {
       setIsProcessing(true);
       
-      // In a real implementation, this would send the file to a Python backend
-      // that uses PySpark to process the CSV data
       try {
         const text = await file.text();
-        const lines = text.split('\n');
-        const headers = lines[0].split(',');
+        console.log('Processing CSV file:', file.name);
         
-        // Parse CSV data (simplified for demo)
-        const data = lines.slice(1).filter(line => line.trim()).map((line, index) => {
-          const values = line.split(',');
-          return {
-            id: index,
-            airline: values[0] || `Airline ${Math.floor(Math.random() * 10) + 1}`,
-            route: values[1] || `Route ${Math.floor(Math.random() * 100) + 1}`,
-            departure_delay: parseFloat(values[2]) || Math.random() * 120 - 20,
-            arrival_delay: parseFloat(values[3]) || Math.random() * 150 - 30,
-            day_of_week: values[4] || ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][Math.floor(Math.random() * 7)],
-            hour: parseInt(values[5]) || Math.floor(Math.random() * 24),
-            month: parseInt(values[6]) || Math.floor(Math.random() * 12) + 1,
-            date: values[7] || new Date().toISOString().split('T')[0]
-          };
-        });
-
+        // Parse CSV data using the new utility
+        const data = parseCsvToFlightData(text);
+        console.log('Parsed flight data:', data.slice(0, 5)); // Log first 5 records
+        
         // Simulate processing delay
         await new Promise(resolve => setTimeout(resolve, 2000));
         
-        setFlightData(data);
-        setFilteredData(data);
+        if (data.length === 0) {
+          console.log('No valid data found, generating sample data');
+          const sampleData = generateSampleFlightData();
+          setFlightData(sampleData);
+          setFilteredData(sampleData);
+        } else {
+          setFlightData(data);
+          setFilteredData(data);
+        }
       } catch (error) {
         console.error('Error processing data:', error);
         // Generate sample data for demo
-        const sampleData = generateSampleData();
+        const sampleData = generateSampleFlightData();
         setFlightData(sampleData);
         setFilteredData(sampleData);
       }
@@ -68,29 +59,11 @@ const AnalyticsDashboard = ({ file, onBack }: AnalyticsDashboardProps) => {
     processData();
   }, [file]);
 
-  const generateSampleData = () => {
-    const airlines = ['Delta', 'American', 'United', 'Southwest', 'JetBlue', 'Alaska', 'Spirit'];
-    const routes = ['NYC-LAX', 'CHI-MIA', 'SF-NYC', 'LAX-CHI', 'MIA-SF', 'NYC-CHI', 'LAX-MIA'];
-    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    
-    return Array.from({ length: 1000 }, (_, i) => ({
-      id: i,
-      airline: airlines[Math.floor(Math.random() * airlines.length)],
-      route: routes[Math.floor(Math.random() * routes.length)],
-      departure_delay: Math.random() * 120 - 20,
-      arrival_delay: Math.random() * 150 - 30,
-      day_of_week: days[Math.floor(Math.random() * days.length)],
-      hour: Math.floor(Math.random() * 24),
-      month: Math.floor(Math.random() * 12) + 1,
-      date: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toISOString().split('T')[0]
-    }));
-  };
-
   const handleFilterChange = (filters: any) => {
     let filtered = [...flightData];
     
     if (filters.airline && filters.airline !== 'all') {
-      filtered = filtered.filter(item => item.airline === filters.airline);
+      filtered = filtered.filter(item => item.AIRLINE === filters.airline);
     }
     
     if (filters.route && filters.route !== 'all') {
@@ -99,8 +72,8 @@ const AnalyticsDashboard = ({ file, onBack }: AnalyticsDashboardProps) => {
     
     if (filters.delayRange) {
       filtered = filtered.filter(item => 
-        item.arrival_delay >= filters.delayRange[0] && 
-        item.arrival_delay <= filters.delayRange[1]
+        item.ARRIVAL_DELAY >= filters.delayRange[0] && 
+        item.ARRIVAL_DELAY <= filters.delayRange[1]
       );
     }
     

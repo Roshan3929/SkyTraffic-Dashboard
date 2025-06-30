@@ -2,25 +2,26 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
+import { FlightData } from '@/utils/dataProcessing';
 
 interface DelayAnalyticsProps {
-  data: any[];
+  data: FlightData[];
 }
 
 const DelayAnalytics = ({ data }: DelayAnalyticsProps) => {
-  // Process data for airline delays
+  // Process data for airline delays using correct field names
   const airlineDelays = data.reduce((acc: any, flight) => {
-    if (!acc[flight.airline]) {
-      acc[flight.airline] = { 
-        airline: flight.airline, 
+    if (!acc[flight.AIRLINE]) {
+      acc[flight.AIRLINE] = { 
+        airline: flight.AIRLINE, 
         departure_delays: [], 
         arrival_delays: [],
         count: 0 
       };
     }
-    acc[flight.airline].departure_delays.push(flight.departure_delay);
-    acc[flight.airline].arrival_delays.push(flight.arrival_delay);
-    acc[flight.airline].count++;
+    acc[flight.AIRLINE].departure_delays.push(flight.DEPARTURE_DELAY);
+    acc[flight.AIRLINE].arrival_delays.push(flight.ARRIVAL_DELAY);
+    acc[flight.AIRLINE].count++;
     return acc;
   }, {});
 
@@ -31,7 +32,7 @@ const DelayAnalytics = ({ data }: DelayAnalyticsProps) => {
     flights: airline.count
   }));
 
-  // Process data for day of week delays
+  // Process data for day of week delays using correct field names
   const dayDelays = data.reduce((acc: any, flight) => {
     if (!acc[flight.day_of_week]) {
       acc[flight.day_of_week] = { 
@@ -40,7 +41,7 @@ const DelayAnalytics = ({ data }: DelayAnalyticsProps) => {
         count: 0 
       };
     }
-    acc[flight.day_of_week].delays.push(flight.arrival_delay);
+    acc[flight.day_of_week].delays.push(flight.ARRIVAL_DELAY);
     acc[flight.day_of_week].count++;
     return acc;
   }, {});
@@ -152,13 +153,13 @@ const DelayAnalytics = ({ data }: DelayAnalyticsProps) => {
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-green-600 mb-2">
-                {(data.reduce((sum, flight) => sum + flight.arrival_delay, 0) / data.length).toFixed(1)}
+                {(data.reduce((sum, flight) => sum + flight.ARRIVAL_DELAY, 0) / data.length).toFixed(1)}
               </div>
               <div className="text-sm text-slate-600">Avg Arrival Delay (min)</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-purple-600 mb-2">
-                {new Set(data.map(flight => flight.airline)).size}
+                {new Set(data.map(flight => flight.AIRLINE)).size}
               </div>
               <div className="text-sm text-slate-600">Airlines</div>
             </div>
